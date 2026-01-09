@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>RN Frozen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f2f6f9;
+    color: #333;
+}
+
+/* HEADER */
+header {
+    background: linear-gradient(135deg, #1abc9c, #16a085);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-bottom-left-radius: 60px;
+    border-bottom-right-radius: 60px;
+}
+
+.logo img {
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* MAIN */
+main {
+    padding: 60px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* CARD */
+section {
+    width: 100%;
+    max-width: 900px;
+    background: white;
+    padding: 30px;
+    margin: -40px auto 0;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    display: none;
+}
+
+section.active {
+    display: block;
+}
+
+section h2 {
+    margin-bottom: 20px;
+    color: #148f77;
+}
+
+/* FORM */
+input, select, button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #148f77;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+}
+
+table th {
+    background-color: #e8f8f5;
+}
+
+/* FOOTER */
+footer {
+    background-color: #148f77;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin: -40px auto 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png">
+        <h1>RN Frozen</h1>
+        <p>Toko Frozen Food</p>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#" onclick="showPage('beranda')">Beranda</a></li>
+            <li><a href="#" onclick="showPage('penjualan')">Penjualan</a></li>
+            <li><a href="#" onclick="showPage('transaksi')">Transaksi</a></li>
+            <li><a href="#" onclick="showPage('profil')">Profil</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+<!-- BERANDA -->
+<section id="beranda" class="active">
+    <h2>Selamat Datang di RN Frozen</h2>
+    <p>
+        RN Frozen adalah aplikasi penjualan sederhana untuk mencatat
+        transaksi penjualan frozen food secara cepat dan rapi.
+    </p>
+</section>
+
+<!-- PENJUALAN -->
+<section id="penjualan">
+    <h2>Form Penjualan</h2>
+
+    <form id="formPenjualan">
+        <select id="barang">
+            <option value="">Pilih Barang</option>
+            <option value="20000">Sosis Ayam (Rp 20.000)</option>
+            <option value="25000">Nugget Ayam (Rp 25.000)</option>
+            <option value="30000">Kentang Frozen (Rp 30.000)</option>
+            <option value="35000">Dumpling Ayam (Rp 35.000)</option>
+            <option value="40000">Bakso Frozen (Rp 40.000)</option>
+        </select>
+
+        <input type="number" id="jumlah" placeholder="Jumlah Beli">
+        <input type="text" id="harga" placeholder="Harga" readonly>
+
+        <button type="submit">Simpan Transaksi</button>
+        <div class="error" id="error"></div>
+    </form>
+</section>
+
+<!-- TRANSAKSI -->
+<section id="transaksi">
+    <h2>Data Transaksi Penjualan</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Barang</th>
+                <th>Harga</th>
+                <th>Jumlah</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="dataTransaksi"></tbody>
+    </table>
+</section>
+
+<!-- PROFIL -->
+<section id="profil">
+    <h2>Tentang RN Frozen</h2>
+    <p>
+        RN Frozen merupakan toko frozen food yang menyediakan berbagai
+        produk beku berkualitas dengan harga terjangkau.
+    </p>
+</section>
+
+</main>
+
+<footer>
+    ©️ 2026 RN Frozen | Sistem Penjualan Frozen Food
+</footer>
+
+<script>
+function showPage(id) {
+    document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
+
+document.getElementById("barang").addEventListener("change", function() {
+    document.getElementById("harga").value = this.value
+        ? "Rp " + this.value
+        : "";
+});
+
+document.getElementById("formPenjualan").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let barangSelect = document.getElementById("barang");
+    let barang = barangSelect.options[barangSelect.selectedIndex].text;
+    let harga = barangSelect.value;
+    let jumlah = document.getElementById("jumlah").value;
+    let error = document.getElementById("error");
+
+    if (barang === "" || harga === "" || jumlah === "") {
+        error.textContent = "Semua data harus diisi!";
+        return;
+    }
+
+    let total = harga * jumlah;
+
+    document.getElementById("dataTransaksi").innerHTML += `
+        <tr>
+            <td>${barang}</td>
+            <td>Rp ${harga}</td>
+            <td>${jumlah}</td>
+            <td>Rp ${total}</td>
+        </tr>
+    `;
+
+    document.getElementById("formPenjualan").reset();
+    document.getElementById("harga").value = "";
+    showPage("transaksi");
+});
+</script>
+
+</body>
+</html>
